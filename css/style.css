@@ -150,6 +150,11 @@ a.navbar-brand img
     font-size: 30px ;
 }
 
+.content .boxform textarea 
+{
+    height: 2em; 
+}
+
 .content .smartImg
 {
     position: relative;
@@ -223,6 +228,29 @@ a.navbar-brand img
 {
     color: #000;
 }
+
+@media (max-width: 768px) {
+    body
+    {
+        display: none;
+    }
+}
+
+@media (max-width: 1366px) {
+    html
+    {
+        background-image: url('../assets/site.png');
+        background-size: cover;
+        width: 1366px;
+        height: 768px;
+    }
+
+    body
+    {
+        display: none;
+    }
+}
+
 
 
 
