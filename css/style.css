@@ -229,28 +229,6 @@ a.navbar-brand img
     color: #000;
 }
 
-@media (max-width: 768px) {
-    body
-    {
-        display: none;
-    }
-}
-
-@media (max-width: 1366px) {
-    html
-    {
-        background-image: url('../assets/site.png');
-        background-size: cover;
-        width: 1366px;
-        height: 768px;
-    }
-
-    body
-    {
-        display: none;
-    }
-}
-
 
 
 
