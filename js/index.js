@@ -1,25 +1,9 @@
 const registerBtn = document.querySelector('#registerBtn');
 const headerCategorias = document.querySelector(".header");
-const form = document.querySelector('.boxForm');
+const boxForm = document.querySelector('.boxForm');
 let noticias = [];
 let categorias = [];
 let categoriaForm = ""
-
-fetch("https://ifsp.ddns.net/webservices/noticiario/noticias")
-.then(resposta => {
-if (!resposta.ok) {
-throw new Error("Houve algum erro");
-}
-return resposta.json();
-})  
-.then(dados => {
-console.log(dados);
-noticias = dados;
-
-})
-.catch(erro => {
-console.error("Erro encontrado: ", erro);
-});
 
 fetch("https://ifsp.ddns.net/webservices/noticiario/categorias")
 .then(resposta => {
@@ -34,9 +18,8 @@ categorias = dados;
 
 let botoesNav = "";
 for(let i = 0; i < categorias.length; i++){
-    botoesNav += `<li><button class="nav" id="button${categorias[i]["nome"]}">${categorias[i]["nome"]}</button></li>`;
+    botoesNav += `<li><button class="nav" id="${categorias[i]["id"]}">${categorias[i]["nome"]}</button></li>`;
     categoriaForm += `<option>${categorias[i]["nome"]}`
-
 }
 
 headerCategorias.innerHTML = `<nav id="nav" class="navbar navbar-dark px-5 pt-3">
@@ -50,16 +33,23 @@ headerCategorias.innerHTML = `<nav id="nav" class="navbar navbar-dark px-5 pt-3"
 </ul>
 </nav>`
 
-let btnJogos = document.querySelector('.nav');
-btnJogos.addEventListener('click', showNotices);
+let btnNavs = document.querySelectorAll('.nav');
+btnNavs.forEach(btn => {
+  btn.addEventListener('click', showNotices);
+});
 let btnLogo = document.querySelector('#logoButton');
 btnLogo.addEventListener('click', showIndex);
 
+let formCriado = false;
+
   function criarCategoria(event){
     event.preventDefault();
-    form.classList.add('hide');
+
+    boxForm.innerHTML = ''
+
+    boxForm.classList.add('hide');
     setTimeout(()=>{
-    form.innerHTML= `
+    boxForm.innerHTML += `
     <form class="m-0">
 	  <div class="form-group">
       <label class="text-light" for="categoria">Categoria</label>
@@ -87,36 +77,72 @@ btnLogo.addEventListener('click', showIndex);
     <button type="button" id="registerConfirm">Cadastrar</button>
     <button type="button" id="registerClear">Resetar</button>
   </form>`
-  form.classList.remove('hide');
-    }, 300);
+
+  boxForm.classList.remove('hide');
+    }, 200);
   }
 
-  registerBtn.addEventListener('click', criarCategoria);
+  registerBtn.addEventListener('focus', criarCategoria);
 })
 
+function exibirNoticias(idCategoria) {
+  let smartDiv = document.querySelector('.smartImg'); // Definindo a variável smartDiv aqui
+  fetch(`https://ifsp.ddns.net/webservices/noticiario/noticias?idCategoria=${idCategoria}`)
+    .then(resposta => {
+      if (!resposta.ok) {
+        throw new Error("Houve algum erro");
+      }
+      return resposta.json();
+    })  
+    .then(dados => {
+      const noticiasFiltradas = dados.filter(noticia => noticia.idCategoria === idCategoria);
+      let boxNotices = document.createElement('div');
+      boxNotices.id = 'divNotices';
+      smartDiv.appendChild(boxNotices);
+      let noticiasHtml = "";
+      for (let i = 0; i < noticiasFiltradas.length; i++) {
+        const noticia = noticiasFiltradas[i];
+        noticiasHtml += `
+          <div class="noticia">
+            <p id="titulo">• ${noticia.titulo}</h2>
+            <p id="subtitulo">${noticia.subtitulo}</h2>
+            <p id="descricao">${noticia.conteudo}</p>
+            <p id="data">- ${noticia.data}</p>
+          </div>
+        `;
+      }
+      boxNotices.innerHTML = noticiasHtml;
+    })
+    .catch(erro => {
+      console.error("Erro encontrado: ", erro);
+    });
+}
+
 function showNotices(event) {
-  event.preventDefault(); 
+  event.preventDefault();
+  boxForm.innerHTML = '';
 
   let smartDiv = document.querySelector('.smartImg');
 
   let newSmartDiv = document.createElement('div');
   newSmartDiv.classList.add('smartImg');
-  
-  setTimeout(()=>{
-    newSmartDiv.innerHTML = `
-    <img src="assets/shadow.png" class="backsmartphone">
-    <img src="assets/smartphoneremove.png" class="smartphone">
-  `;
-  newSmartDiv.classList.remove('hide');
-    }, 0);
+
+  setTimeout(() => {
+    newSmartDiv.style.backgroundImage = 'url(../assets/smartphoneremove.png)';
+  }, 0);
 
   smartDiv.parentNode.replaceChild(newSmartDiv, smartDiv);
-  
+
   smartDiv = newSmartDiv;
+
+  let idCategoria = parseInt(event.target.id);
+  exibirNoticias(idCategoria);
 }
 
 function showIndex(event) {
   event.preventDefault();
+
+  boxForm.innerHTML = '';
   
   let smartDivremove = document.querySelector('.smartImg');
 
@@ -124,11 +150,8 @@ function showIndex(event) {
   newSmartDivremove.classList.add('smartImg');
 
   setTimeout(()=>{
-    newSmartDivremove.innerHTML = `
-    <img src="assets/shadow.png" class="backsmartphone">
-    <img src="assets/smartphone.png" class="smartphone">
-  `;
-    }, 0);
+    newSmartDiv.style.backgroundImage = 'url(../assets/smartclock.png)';
+  }, 0);
 
   smartDivremove.parentNode.replaceChild(newSmartDivremove, smartDivremove);
 

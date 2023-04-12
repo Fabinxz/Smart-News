@@ -70,6 +70,12 @@ body
     border: none;
     padding: 0;
     width: 0px;
+    transition: 0.3s ease-in-out;
+}
+
+#logoButton:hover
+{
+    transform: translateY(-4px);
 }
 
 a.navbar-brand
@@ -88,7 +94,7 @@ a.navbar-brand img
 .content
 {
     position: relative;
-    width: 80.5%;
+    width: 82%;
     display: flex;
     justify-content: space-between;
     margin-left: 175px;
@@ -116,32 +122,52 @@ a.navbar-brand img
 
 .content .smartImg
 {   
-    position: relative;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    transition: 0.3s;
+    background-image: url('../assets/smartclock.png');
+    width: 353px;
+    height: 707px;
+    transition: background-image 0s;
 }
 
-.content .smartImg:hover
+.content .smartImg #divNotices
 {
-    transform: translateY(-10px);
+    width: 342.5px;
+    height: 678px;
+    word-wrap: break-word;
+    overflow-x: hidden;
+    overflow-y: auto;
+    border-radius: 25px;
+    margin-top: 14px;
 }
 
-.content .smartImg .backsmartphone
-{   
-    position: absolute;
-    z-index: -1;
-    width: 450px;
-    height: 700px; 
-    margin-right: -25px;
+.content .smartImg #divNotices .noticia
+{
+    position: relative;
+    margin: 35px;   
 }
 
-.content .smartImg .smartphone
-{   
-    z-index: 1;
-    margin-right: -20px;
+.content .smartImg #divNotices .noticia #titulo
+{
+    font-size: 20px;
+    font-weight: bolder;
 }
+
+.content .smartImg #divNotices .noticia #subtitulo
+{
+    font-size: 17px;
+    text-decoration: underline;
+}
+
+.content .smartImg #divNotices .noticia #descricao
+{
+    font-size: 15px;
+}
+
+.content .smartImg #divNotices .noticia #data
+{
+    font-size: 15px;
+    font-style: italic;
+}
+
 
 .content .info p
 {
@@ -180,7 +206,7 @@ a.navbar-brand img
     margin: 25px 0px;
     border-radius: 10px;
     opacity: 1;
-    transition: opacity 0.3s ease-in-out;
+    transition: opacity 0.2s ease-in-out;
 }
 
 .content .info .boxForm.hide
