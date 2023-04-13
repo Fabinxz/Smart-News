@@ -1,3 +1,19 @@
+function getTime() {
+    const date = new Date();
+    const hours = date.getHours();
+    const minutes = date.getMinutes();
+    return `${hours < 10 ? '0' + hours : hours}:${minutes < 10 ? '0' + minutes : minutes}`;
+}
+
+function updateTime() {
+    const clock = document.getElementById('clock');
+    clock.innerText = getTime();
+}
+
+updateTime();
+setInterval(updateTime, 1000);
+
+
 const registerBtn = document.querySelector('#registerBtn');
 const headerCategorias = document.querySelector(".header");
 const boxForm = document.querySelector('.boxForm');
@@ -6,23 +22,24 @@ let categorias = [];
 let categoriaForm = ""
 
 fetch("https://ifsp.ddns.net/webservices/noticiario/categorias")
-.then(resposta => {
-if (!resposta.ok) {
-throw new Error("Houve algum erro");
-}
-return resposta.json();
-})  
-.then(dados => {
-console.log(dados);
-categorias = dados;
+    .then(resposta => {
+        if (!resposta.ok) {
+            throw new Error("Houve algum erro");
+        }
+        return resposta.json();
+    })
+    .then(dados => {
+        console.log(dados);
+        categorias = dados;
 
-let botoesNav = "";
-for(let i = 0; i < categorias.length; i++){
-    botoesNav += `<li><button class="nav" id="${categorias[i]["id"]}">${categorias[i]["nome"]}</button></li>`;
-    categoriaForm += `<option>${categorias[i]["nome"]}`
-}
 
-headerCategorias.innerHTML = `<nav id="nav" class="navbar navbar-dark px-5 pt-3">
+        let botoesNav = "";
+        for (let i = 0; i < categorias.length; i++) {
+            botoesNav += `<li><button class="nav" id="${categorias[i]["id"]}">${categorias[i]["nome"]}</button></li>`;
+            categoriaForm += `<option>${categorias[i]["nome"]}`
+        }
+
+        headerCategorias.innerHTML = `<nav id="nav" class="navbar navbar-dark px-5 pt-3">
 <a class="navbar-brand">
 <button id="logoButton" type="button">
   <img src="assets/logo.png" height="55" class="d-inline-block align-top mt-3" alt="">
@@ -33,23 +50,23 @@ headerCategorias.innerHTML = `<nav id="nav" class="navbar navbar-dark px-5 pt-3"
 </ul>
 </nav>`
 
-let btnNavs = document.querySelectorAll('.nav');
-btnNavs.forEach(btn => {
-  btn.addEventListener('click', showNotices);
-});
-let btnLogo = document.querySelector('#logoButton');
-btnLogo.addEventListener('click', showIndex);
+        let btnNavs = document.querySelectorAll('.nav');
+        btnNavs.forEach(btn => {
+            btn.addEventListener('click', showNotices);
+        });
+        let btnLogo = document.querySelector('#logoButton');
+        btnLogo.addEventListener('click', showIndex);
 
-let formCriado = false;
 
-  function criarCategoria(event){
-    event.preventDefault();
 
-    boxForm.innerHTML = ''
+        function criarCategoria(event) {
+            event.preventDefault();
 
-    boxForm.classList.add('hide');
-    setTimeout(()=>{
-    boxForm.innerHTML += `
+            boxForm.innerHTML = ''
+
+            boxForm.classList.add('hide');
+            setTimeout(() => {
+                boxForm.innerHTML += `
     <form class="m-0">
 	  <div class="form-group">
       <label class="text-light" for="categoria">Categoria</label>
@@ -78,31 +95,35 @@ let formCriado = false;
     <button type="button" id="registerClear">Resetar</button>
   </form>`
 
-  boxForm.classList.remove('hide');
-    }, 200);
-  }
+                boxForm.classList.remove('hide');
+            }, 200);
+        }
 
-  registerBtn.addEventListener('focus', criarCategoria);
-})
+        registerBtn.addEventListener('focus', criarCategoria);
+    })
 
 function exibirNoticias(idCategoria) {
-  let smartDiv = document.querySelector('.smartImg'); // Definindo a variável smartDiv aqui
-  fetch(`https://ifsp.ddns.net/webservices/noticiario/noticias?idCategoria=${idCategoria}`)
-    .then(resposta => {
-      if (!resposta.ok) {
-        throw new Error("Houve algum erro");
-      }
-      return resposta.json();
-    })  
-    .then(dados => {
-      const noticiasFiltradas = dados.filter(noticia => noticia.idCategoria === idCategoria);
-      let boxNotices = document.createElement('div');
-      boxNotices.id = 'divNotices';
-      smartDiv.appendChild(boxNotices);
-      let noticiasHtml = "";
-      for (let i = 0; i < noticiasFiltradas.length; i++) {
-        const noticia = noticiasFiltradas[i];
-        noticiasHtml += `
+    let smartDiv = document.querySelector('.smartImg'); // Definindo a variável smartDiv aqui
+    fetch(`https://ifsp.ddns.net/webservices/noticiario/noticias?idCategoria=${idCategoria}`)
+        .then(resposta => {
+            if (!resposta.ok) {
+                throw new Error("Houve algum erro");
+            }
+            return resposta.json();
+        })
+        .then(dados => {
+
+            const noticiasFiltradas = dados.filter(noticia => noticia.idCategoria === idCategoria);
+            let boxNotices = document.createElement('div');
+
+
+            boxNotices.id = 'divNotices';
+
+            smartDiv.appendChild(boxNotices);
+            let noticiasHtml = "";
+            for (let i = 0; i < noticiasFiltradas.length; i++) {
+                const noticia = noticiasFiltradas[i];
+                noticiasHtml += `
           <div class="noticia">
             <p id="titulo">• ${noticia.titulo}</h2>
             <p id="subtitulo">${noticia.subtitulo}</h2>
@@ -110,52 +131,64 @@ function exibirNoticias(idCategoria) {
             <p id="data">- ${noticia.data}</p>
           </div>
         `;
-      }
-      boxNotices.innerHTML = noticiasHtml;
-    })
-    .catch(erro => {
-      console.error("Erro encontrado: ", erro);
-    });
+            }
+            boxNotices.innerHTML = noticiasHtml;
+        })
+        .catch(erro => {
+            console.error("Erro encontrado: ", erro);
+        });
 }
 
 function showNotices(event) {
-  event.preventDefault();
-  boxForm.innerHTML = '';
+    event.preventDefault();
+    boxForm.innerHTML = '';
 
-  let smartDiv = document.querySelector('.smartImg');
+    let smartDiv = document.querySelector('.smartImg');
 
-  let newSmartDiv = document.createElement('div');
-  newSmartDiv.classList.add('smartImg');
+    let newSmartDiv = document.createElement('div');
+    newSmartDiv.classList.add('smartImg');
 
-  setTimeout(() => {
-    newSmartDiv.style.backgroundImage = 'url(../assets/smartphoneremove.png)';
-  }, 0);
+    newSmartDiv.style.backgroundImage = 'url(./assets/smartphoneremove.png)';
 
-  smartDiv.parentNode.replaceChild(newSmartDiv, smartDiv);
+    smartDiv.parentNode.replaceChild(newSmartDiv, smartDiv);
 
-  smartDiv = newSmartDiv;
+    smartDiv = newSmartDiv;
 
-  let idCategoria = parseInt(event.target.id);
-  exibirNoticias(idCategoria);
+    let idCategoria = parseInt(event.target.id);
+    exibirNoticias(idCategoria);
 }
 
 function showIndex(event) {
-  event.preventDefault();
+    event.preventDefault();
 
-  boxForm.innerHTML = '';
-  
-  let smartDivremove = document.querySelector('.smartImg');
+    boxForm.innerHTML = '';
 
-  let newSmartDivremove = document.createElement('div');
-  newSmartDivremove.classList.add('smartImg');
+    let smartDivremove = document.querySelector('.smartImg');
 
-  setTimeout(()=>{
-    newSmartDiv.style.backgroundImage = 'url(../assets/smartclock.png)';
-  }, 0);
+    let newSmartDivremove = document.createElement('div');
+    newSmartDivremove.classList.add('smartImg');
 
-  smartDivremove.parentNode.replaceChild(newSmartDivremove, smartDivremove);
+    newSmartDivremove.style.backgroundImage = 'url(./assets/smartphone.png)';
 
-  smartDivremove = newSmartDivremove;
+    const boxNotices = document.createElement('div');
+    boxNotices.id = 'divNotices';
+
+    const clockDiv = document.createElement('div');
+    clockDiv.id = 'clock';
+
+    boxNotices.appendChild(clockDiv);
+
+    function updateTime() {
+        const time = getTime();
+        clockDiv.innerText = time;
+    }
+
+    updateTime();
+    setInterval(updateTime, 1000);
+
+    newSmartDivremove.appendChild(boxNotices);
+
+    smartDivremove.parentNode.replaceChild(newSmartDivremove, smartDivremove);
+
+    smartDivremove = newSmartDivremove;
 }
-
-
