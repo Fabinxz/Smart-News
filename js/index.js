@@ -148,7 +148,7 @@ function showNotices(event) {
     let newSmartDiv = document.createElement('div');
     newSmartDiv.classList.add('smartImg');
 
-    newSmartDiv.style.backgroundImage = 'url(./assets/smartphoneremove.png)';
+      newSmartDiv.style.backgroundImage = 'url(./assets/smartphoneremove.png)';
 
     smartDiv.parentNode.replaceChild(newSmartDiv, smartDiv);
 
@@ -156,7 +156,7 @@ function showNotices(event) {
 
     let idCategoria = parseInt(event.target.id);
     exibirNoticias(idCategoria);
-}
+  }
 
 function showIndex(event) {
     event.preventDefault();
@@ -170,13 +170,10 @@ function showIndex(event) {
 
     newSmartDivremove.style.backgroundImage = 'url(./assets/smartphone.png)';
 
-    const boxNotices = document.createElement('div');
-    boxNotices.id = 'divNotices';
-
     const clockDiv = document.createElement('div');
     clockDiv.id = 'clock';
 
-    boxNotices.appendChild(clockDiv);
+    newSmartDivremove.appendChild(clockDiv);
 
     function updateTime() {
         const time = getTime();
@@ -186,9 +183,8 @@ function showIndex(event) {
     updateTime();
     setInterval(updateTime, 1000);
 
-    newSmartDivremove.appendChild(boxNotices);
-
     smartDivremove.parentNode.replaceChild(newSmartDivremove, smartDivremove);
 
     smartDivremove = newSmartDivremove;
 }
+
