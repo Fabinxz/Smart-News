@@ -1,5 +1,3 @@
 # Smart-News
 
-Smart News é uma plataforma que fornece notícias atualizadas e relevantes, apresentando-as de forma organizada e fácil de acessar para o usuário.
-
-Para acessar o site, basta clicar no link https://smart-news-zeta.vercel.app.
+Smart News is a platform that provides updated and relevant news, presenting them in an organized and easy-to-access way for the user. To access the website, simply click on the link https://smart-news-zeta.vercel.app.
