@@ -392,11 +392,7 @@ function enviarDados() {
     })
 }
 
-confirmBtn.addEventListener('click', () => {
-  let categoriaId = document.querySelector("#categoriaForm").options[document.querySelector("#categoriaForm").selectedIndex].id;
-  form.reset();
-  document.getElementById(categoriaId).click();
-});function removerNoticias(id) {
+function removerNoticias(id) {
   let options = {
     method: "DELETE",
     headers: {
