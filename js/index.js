@@ -189,9 +189,35 @@ function exibirNoticias(idCategoria) {
               const divNoticia = btnRemover.closest('.noticia');
               divNoticia.remove();
               document.getElementById(idCategoria).click();
+              Toastify({
+                text: "Notícia removida com sucesso!",
+                duration: 3000,
+                style: {
+                  background: "linear-gradient(to right, #00b09b, #96c93d)"
+                },
+                position: "right",
+                gravity: "top",
+                offset: {
+                  x: 20,
+                  y: 20
+                }
+              }).showToast();
             })
             .catch(erro => {
               console.error("Erro encontrado: ", erro);
+              Toastify({
+                text: "Erro ao remover notícia...",
+                duration: 3000,
+                style: {
+                  background: "linear-gradient(to right, #f44336, #ff5722)",
+                },
+                position: "right",
+                gravity: "top",
+                offset: {
+                  x: 20,
+                  y: 20
+                }
+              }).showToast();
             });
         });
       });
@@ -408,34 +434,8 @@ function removerNoticias(id) {
     })
     .then(dados => {
       console.log(dados);
-      Toastify({
-        text: "Notícia removida com sucesso!",
-        duration: 3000,
-        style: {
-          background: "linear-gradient(to right, #00b09b, #96c93d)"
-        },
-        position: "right",
-        gravity: "top",
-        offset: {
-          x: 20,
-          y: 20
-        }
-      }).showToast();
     })
     .catch(erro => {
       console.error("Erro encontrado: ", erro);
-      Toastify({
-        text: "Erro ao remover notícia...",
-        duration: 3000,
-        style: {
-          background: "linear-gradient(to right, #f44336, #ff5722)",
-        },
-        position: "right",
-        gravity: "top",
-        offset: {
-          x: 20,
-          y: 20
-        }
-      }).showToast();
     });
 }
